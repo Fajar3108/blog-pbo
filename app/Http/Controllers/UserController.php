@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
-use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Models\User;
+use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
@@ -104,5 +105,10 @@ class UserController extends Controller
             'content' => null,
         ];
         return response()->json($respon, 200);
+    }
+
+    public function show()
+    {
+        return new UserResource(auth()->user());
     }
 }
