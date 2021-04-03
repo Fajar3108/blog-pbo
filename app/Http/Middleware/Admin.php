@@ -16,18 +16,19 @@ class Admin
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user() && strtoupper(auth()->user()->role->name) == "ADMIN"){
-            return $next($request);
+        if(auth()->user()){
+            if(strtoupper(auth()->user()->role->name) == "ADMIN"){
+                $respon = [
+                    'status' => 'error',
+                    'msg' => 'You are not an Admin',
+                    'errors' => "Unauthorized action.",
+                    'content' => [
+                        'status_code' => 403
+                    ]
+                ];
+                return response()->json($respon, 403);
+            }
         }
-
-        $respon = [
-            'status' => 'error',
-            'msg' => 'You are not an Admin',
-            'errors' => "Unauthorized action.",
-            'content' => [
-                'status_code' => 403
-            ]
-        ];
-        return response()->json($respon, 403);
+        return $next($request);
     }
 }
